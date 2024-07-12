@@ -3,11 +3,17 @@
 @tailwind utilities;
 
 * {
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
 }
 
 body {
+    font-size: 1.3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
     background-color: #63b5d8;
-    padding: 40vh;
     font-family: "Poppins", sans-serif;
 }
