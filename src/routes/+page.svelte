@@ -1,13 +1,24 @@
 <script>
 	import '../global.css';
+	import { setContext } from 'svelte';
+	import { writable } from 'svelte/store';
+	import WeatherBody from '../components/WeatherBody.svelte';
+	import WeatherFooter from '../components/WeatherFooter.svelte';
 	import SearchIcon from '$lib/search-icon.svg';
-	import LocationIcon from '$lib/location.png';
-	import TemperatureIcon from '$lib/temperature.png';
-	import HumidityIcon from '$lib/humidity.png';
 
-	let weatherInfo;
+	export let weatherInfo;
 	let search;
 	let error = '';
+
+	// Global state management
+	// Declare a global writable variable
+	const weather = writable();
+
+	// Set the retrieved weather information to the writable variable
+	$: weather.set(weatherInfo);
+
+	// Set the writable variable to the global context
+	setContext('weather', weather);
 
 	async function fetchData() {
 		const url = `https://weatherapi-com.p.rapidapi.com/current.json?q=${search}`;
@@ -60,30 +71,8 @@
 		<p class="text-lg p-2 text-red-600">{error}</p>
 	{:else if weatherInfo}
 		<div class="flex flex-col items-center w-full">
-			<img src={weatherInfo.current.condition.icon} width="80px" alt="Condition Icon" />
-			<p class="text-3xl font-semibold">{weatherInfo.current.temp_c}°C</p>
-			<p class="text-lg mb-2">{weatherInfo.current.condition.text}</p>
-			<div class="flex items-center gap-1 p-2">
-				<img src={LocationIcon} width="18px" height="18px" alt="Location Icon" />
-				<p class="text-lg">{weatherInfo.location.name}, {weatherInfo.location.region}</p>
-			</div>
-			<div class="flex items-center justify-evenly border-slate-300 border-t-2 w-full">
-				<div class="flex p-2">
-					<img src={TemperatureIcon} height="20px" alt="Temperature Icon" />
-					<div>
-						<p class="text-lg font-semibold">{weatherInfo.current.feelslike_c}°C</p>
-						<p class="text-sm">Feels like</p>
-					</div>
-				</div>
-				<div class="border-l border-slate-300 h-20"></div>
-				<div class="flex p-2">
-					<img src={HumidityIcon} width="45px" height="18px" alt="Temperature Icon" />
-					<div>
-						<p class="text-lg font-semibold">{weatherInfo.current.humidity}%</p>
-						<p class="text-sm">Humidity</p>
-					</div>
-				</div>
-			</div>
+			<WeatherBody />
+			<WeatherFooter />
 		</div>
 	{:else}
 		<p class="text-lg p-2">Your search will appear here...</p>
