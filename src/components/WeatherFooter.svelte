@@ -3,6 +3,7 @@
 	import TemperatureIcon from '$lib/temperature.png';
 	import HumidityIcon from '$lib/humidity.png';
 
+	// Get the weather from the global context
 	const weather = getContext('weather');
 </script>
 

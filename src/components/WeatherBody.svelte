@@ -2,7 +2,7 @@
 	import { getContext } from 'svelte';
 	import LocationIcon from '$lib/location.png';
 
-	// Get the 
+	// Get the weather from the global context
 	const weather = getContext('weather');
 </script>
 
